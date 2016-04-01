@@ -104,7 +104,7 @@ angular.module('ivh.treeview').directive('ivhTreeviewChildren', function() {
     restrict: 'AE',
     require: '^ivhTreeviewNode',
     template: [
-      '<ul ng-if="getChildren().length" class="ivh-treeview" style="list-style-type:none; padding:0; margin:-1px">',
+      '<ul ng-if="getChildren().length && depth == 1" class="ivh-treeview" style="list-style-type:none; padding-top:0; padding-bottom:0; margin:-1px">',
         '<li ng-repeat="child in getChildren()"',
             'ng-hide="trvw.hasFilter() && !trvw.isVisible(child)"',
             'class="ivh-treeview-node"',
@@ -112,7 +112,16 @@ angular.module('ivh.treeview').directive('ivhTreeviewChildren', function() {
             'ivh-treeview-node="child"',
             'ivh-treeview-depth="childDepth">',
         '</li>',
-      '</ul>'
+      '</ul>',
+     '<ul ng-if="getChildren().length && depth != 1" class="ivh-treeview" style="list-style-type:none; padding:0; margin:-1px">',
+        '<li ng-repeat="child in getChildren()"',
+            'ng-hide="trvw.hasFilter() && !trvw.isVisible(child)"',
+            'class="ivh-treeview-node"',
+            'ng-class="{\'ivh-treeview-node-collapsed\': !trvw.isExpanded(child) && !trvw.isLeaf(child)}"',
+            'ivh-treeview-node="child"',
+            'ivh-treeview-depth="childDepth">',
+        '</li>',
+     '</ul>'
     ].join('\n')
   };
 });
@@ -137,7 +146,7 @@ angular.module('ivh.treeview').directive('ivhTreeviewNode', ['ivhTreeviewCompile
     require: '^ivhTreeview',
     compile: function(tElement) {
       return ivhTreeviewCompiler
-        .compile(tElement, function(scope, element, attrs, trvw) {
+        .compile(tElement, function (scope, element, attrs, trvw) {
           var node = scope.node;
 
           var getChildren = scope.getChildren = function() {
@@ -446,7 +455,7 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
        * @param {Object} node A tree node
        * @return {String} The node label
        */
-      trvw.label = function(node) {
+      trvw.label = function (node) {
         return node[localOpts.labelAttribute];
       };
 
