@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     concat: {
       options: {separator: '\n'},
       dist: {
-        src: ['src/scripts/module.js', 'src/scripts/**/*.js'],
+        src: ['src/scripts/directives/ivh-treeview.js'],
         dest: 'dist/ivh-treeview.js'
       }
     },
